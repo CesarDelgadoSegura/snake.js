@@ -1,0 +1,120 @@
+<style>
+	body{
+		margin:0;
+		padding:0;
+		background-color:#000000;
+	}
+	#content{
+		display:flex;
+	}
+	#content #main{
+		margin:0 auto;
+		background-color:#1f1f1f;
+		padding-left:1px;
+		padding-top:1px;
+		margin-top:20px;
+	}
+	.block{
+		display:inline-block;
+		width:10px;
+		height:10px;
+		margin-right:1px;
+		margin-bottom:1px;
+		background-color:#000000;
+	}
+	.snake{
+		display:inline-block;
+		width:10px;
+		height:10px;
+		margin-right:1px;
+		margin-bottom:1px;
+		background-color:#FF0000;
+	}
+	.jump{
+		display:block;
+	}
+</style>
+<div id="content">
+	<div id="main"></div>
+</div>
+<script type="text/javascript">
+	let x = 40;
+	let y = 50;
+	let jump = '<div class="jump"></div>';
+	let table = document.getElementById('main');
+
+	function sleep(secs){
+	  return new Promise(resolve => setTimeout(resolve, (secs * 1000)));
+	}
+
+	let field = new Array(x);
+	for(let i = 0; i < x; i++)
+	{
+		field[i] = new Array(y);
+	}
+
+	for(let i = 0; i < x; i++)
+	{
+		for(let j = 0; j < y; j++)
+		{
+			field[i][j] = 'block';
+			table.insertAdjacentHTML('beforeend', '<div id="block_id_' + i + '_' + j + '" class="block"></div>');
+		}
+		table.insertAdjacentHTML('beforeend', jump);
+	}
+
+	field[parseInt(x / 2)][parseInt(y / 2)] = 'snake';
+
+	setInterval(drawGame, 250);
+	
+	document.getElementById('main').addEventListener('click', snakeDown, false);
+	
+	function drawGame()
+	{
+		snakeDown();
+
+		for(let i = 0; i < x; i++)
+		{
+			for(let j = 0; j < y; j++)
+			{
+				let block = 'block_id_' + i + '_' + j;
+
+				let blockHandle = document.getElementById(block);
+
+				blockHandle.className = field[i][j];
+			}
+		}
+	}
+
+	function snakeDown()
+	{
+		for(let i = 0; i < x; i++)
+		{
+			for(let j = 0; j < y; j++)
+			{
+				if(field[i][j] === 'snake')
+				{
+					let tmp_i = 0;
+
+					field[i][j] = 'block';
+					
+					if((i + 1) === x)
+					{
+						tmp_i = 0;
+					}
+					else
+					{
+						tmp_i = (i + 1);
+					}
+
+					field[tmp_i][j] = 'snake';
+					return;
+				}
+			}
+		}
+	}
+
+	window.addEventListener('keydown', function(evt){
+		console.log(evt.key);
+	}, false);
+</script>
