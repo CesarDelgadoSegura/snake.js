@@ -94,20 +94,37 @@
 			{
 				if(field[i][j] === 'snake')
 				{
-					let tmp_i = 0;
+					let tmp_i = i;
+					let tmp_sum_i = i;
+
+					let tmp_j = 0;
+					let tmp_sum_j = (j + 1);
 
 					field[i][j] = 'block';
 					
-					if((i + 1) === x)
+					/** procesos en la x */
+					if(tmp_sum_j === -1)
+					{
+						tmp_j = (y - 1);
+					}
+					else if(tmp_sum_j === y)
+					{
+						tmp_j = 0;
+					}
+					else if(tmp_sum_i === x)
 					{
 						tmp_i = 0;
 					}
+					else if(tmp_sum_i === -1)
+					{
+						tmp_i = (x - 1);
+					}
 					else
 					{
-						tmp_i = (i + 1);
+						tmp_j = tmp_sum_j;
 					}
 
-					field[tmp_i][j] = 'snake';
+					field[tmp_i][tmp_j] = 'snake';
 					return;
 				}
 			}
